@@ -1,0 +1,25 @@
+{% extends "posts/base.html" %}
+{% block content %}
+
+
+<div class='col-sm-8 col-sm-offset-3'>
+    <h1>{{ title }}</h1><br/>
+
+    {% for obj in object_list %}
+    <div class="col-sm-12  mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'posts:detail' id=obj.id %}">{{ obj.title }}</a> <small>{{ obj.timestamp|timesince }} ago</small>
+                </h5>
+                <p class="card-text">{{ obj.content|linebreaks|truncatechars:120 }}</p>
+                <a href="{% url 'posts:detail' id=obj.id %}" class="btn btn-info" role="button">View</a>   
+            </div>
+        </div>
+    </div>
+    
+   
+    {% endfor %}
+</div>
+</div>
+{% endblock content %}
