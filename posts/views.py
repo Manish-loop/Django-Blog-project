@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post
@@ -8,7 +9,7 @@ from .forms import PostForm
 def post_create(request):
     form = PostForm()
     if request.method=="POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.save()
@@ -31,7 +32,11 @@ def post_detail(request, id):
 
 
 def post_list(request):
-    queryset = Post.objects.all().order_by("-timestamp")
+    queryset_list = Post.objects.all() 
+    paginator = Paginator(queryset_list, 25) 
+
+    page_number = request.GET.get("page")
+    queryset = paginator.get_page(page_number)
     context = {
             "object_list": queryset,
             "title": "List"
@@ -43,7 +48,7 @@ def post_update(request, id):
     instance = get_object_or_404(Post, id=id)
     form = PostForm(instance=instance)
     if request.method=="POST":
-        form = PostForm(request.POST, instance=instance)
+        form = PostForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.save()

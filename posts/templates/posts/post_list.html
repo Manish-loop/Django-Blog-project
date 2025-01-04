@@ -8,7 +8,11 @@
     {% for obj in object_list %}
     <div class="col-sm-12  mb-4">
         <div class="card">
+            {% if obj.image %}
+                <img src='{{ obj.image.url }}' class='img-responsive'>
+                {% endif %}
             <div class="card-body">
+                
                 <h5 class="card-title">
                     <a href="{% url 'posts:detail' id=obj.id %}">{{ obj.title }}</a> <small>{{ obj.timestamp|timesince }} ago</small>
                 </h5>
@@ -18,8 +22,27 @@
         </div>
     </div>
     
-   
-    {% endfor %}
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            {% comment %} <a href="?page=1">&laquo; first</a> {% endcomment %}
+            <a href="?page={{object_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{object_list.number }} of {{object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?page={{object_list.next_page_number }}">next</a>
+            {% comment %} <a href="?page={{object_list.paginator.num_pages }}">last &raquo;</a> {% endcomment %}
+        {% endif %}
+    </span>
 </div>
 </div>
+
+
+
 {% endblock content %}
