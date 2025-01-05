@@ -8,6 +8,6 @@ urlpatterns = [
     path('', post_list, name='list'),
     path('create/', post_create),
     path('<slug:slug>/', post_detail, name='detail'), 
-    path('<int:id>/edit/', post_update, name='update'), 
-    path('<int:id>/delete/', post_delete),
+    path('<slug:slug>/edit/', post_update, name='update'), 
+    path('<slug:slug>/delete/', post_delete),
 ]
