@@ -13,10 +13,10 @@
             <div class="card-body">
                 
                 <h5 class="card-title">
-                    <a href="{% url 'posts:detail' id=obj.id %}">{{ obj.title }}</a> <small>{{ obj.timestamp|timesince }} ago</small>
+                    <a href="{% url 'posts:detail' slug=obj.slug %}">{{ obj.title }}</a> <small>{{ obj.timestamp|timesince }} ago</small>
                 </h5>
                 <p class="card-text">{{ obj.content|linebreaks|truncatechars:120 }}</p>
-                <a href="{% url 'posts:detail' id=obj.id %}" class="btn btn-info" role="button">View</a>   
+                <a href="{% url 'posts:detail' slug=obj.slug %}" class="btn btn-info" role="button">View</a>   
             </div>
         </div>
     </div>
