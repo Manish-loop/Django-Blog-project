@@ -3,17 +3,21 @@ from urllib.parse import quote_plus
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
 def post_create(request):
+    if not request.user.is_authenticated:
+        raise Http404
+    
     form = PostForm()
     if request.method=="POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
+            instance.user = request.user
             instance.save()
             messages.success(request, "Successfully Created")
             return redirect('posts:detail', id=instance.id)
@@ -49,6 +53,8 @@ def post_list(request):
 
 
 def post_update(request, slug):
+    if not request.user.is_superuser:
+        raise Http404
     instance = get_object_or_404(Post, slug=slug)
     form = PostForm(instance=instance)
     if request.method=="POST":
