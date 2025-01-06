@@ -12,7 +12,7 @@
     {% if instance.image %}
     <img src='{{ instance.image.url }}' class='img-responsive'>
     {% endif %}
-<h1>{{title}} <small>{{ instance.timestamp|timesince }}</small> </h1>
+<h1>{{title}} <small>{% if instance.draft %}<span style='color:red;'>Draft</span> {% endif %}{{ instance.publish }}</small> </h1>
 
 {% if instance.user.get_full_name %}
 <p>Author: {{ instance.user.get_full_name }}</p>
@@ -23,7 +23,7 @@
 </p>
     
 <div class="row">
-<div class='col-sm-10 col-sm-offset-3'>
+<div class='col-sm-10'>
         
 {{ instance.content|linebreaks }}
 
