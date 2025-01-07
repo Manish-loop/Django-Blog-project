@@ -1,5 +1,6 @@
 from urllib.parse import quote_plus
 from django.contrib import messages
+from django.db.models import Q
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -46,9 +47,17 @@ def post_list(request):
     today = timezone.now().date()
     queryset_list = Post.objects.active()
     if request.user.is_authenticated:
-        queryset_list = Post.objects.all() # Can see everything including draft
-    paginator = Paginator(queryset_list, 25) 
-
+        queryset_list = Post.objects.all() # Can see everything including draft, if user is authenticated
+    
+    query = request.GET.get("q") # Q = complex lookups
+    if query:
+        queryset_list = queryset_list.filter( 
+                Q(title__icontains=query)|
+                Q(content__icontains=query)|
+                Q(user__first_name__icontains=query)|
+                Q(user__last_name__icontains=query)
+                ).distinct() # no duplicate items
+    paginator = Paginator(queryset_list, 4) 
     page_number = request.GET.get("page")
     queryset = paginator.get_page(page_number)
     context = {
