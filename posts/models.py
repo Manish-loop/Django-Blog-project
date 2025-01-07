@@ -1,13 +1,19 @@
 from django.db import models
 from django.conf import settings
-
+from django.utils import timezone
 from django.urls import reverse
 import os
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
-from django.db.models.signals import post_save
+
 
 # Create your models here.
+# way to control how model works= PostManager
+class PostManager(models.Manager):
+    def active(self, *args, **kwargs):
+        return super(PostManager, self).filter(draft=False).filter(publish__lte=timezone.now())
+
+
 def upload_location(instance, filename): # where images are actually uploaded to 
     return os.path.join(str(instance.id), filename)
     # return "%s/%s" %(instance.id, filename)
@@ -28,6 +34,8 @@ class Post(models.Model):
     publish = models.DateField(auto_now=False, auto_now_add=False)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    
+    objects = PostManager() # Linking model manager to our model 
     
     def __str__(self):
         return self.title

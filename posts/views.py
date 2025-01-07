@@ -1,6 +1,6 @@
 from urllib.parse import quote_plus
-
 from django.contrib import messages
+from django.utils import timezone
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -30,6 +30,9 @@ def post_create(request):
 
 def post_detail(request, slug):
     instance = get_object_or_404(Post, slug=slug)
+    if instance.publish > timezone.now().date() or instance.draft:
+        if not request.user.is_authenticated:
+            raise Http404
     share_string = quote_plus(instance.content)
     context = {
         "title": instance.title,
@@ -40,23 +43,27 @@ def post_detail(request, slug):
 
 
 def post_list(request):
-    queryset_list = Post.objects.all() 
+    today = timezone.now().date()
+    queryset_list = Post.objects.active()
+    if request.user.is_authenticated:
+        queryset_list = Post.objects.all() # Can see everything including draft
     paginator = Paginator(queryset_list, 25) 
 
     page_number = request.GET.get("page")
     queryset = paginator.get_page(page_number)
     context = {
             "object_list": queryset,
-            "title": "List"
+            "title": "List", 
+            "today": today
         }
     return render(request, 'posts/post_list.html', context)
 
 
 def post_update(request, slug):
-    if not request.user.is_superuser:
+    if not request.user.is_authenticated:
         raise Http404
     instance = get_object_or_404(Post, slug=slug)
-    form = PostForm(instance=instance)
+    form = PostForm(instance=instance)  
     if request.method=="POST":
         form = PostForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
