@@ -29,7 +29,27 @@
 {% block content %}{% endblock content %}
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".content-markdown").each(function(){
+            var content = $(this).text();
+            console.log(content);
+            var markedContent = marked.parse(content);
+            console.log(markedContent);
+            $(this).html(markedContent);
+        });
+    
+    });
+
+</script>
+
+
 
 </body>
 </html>
