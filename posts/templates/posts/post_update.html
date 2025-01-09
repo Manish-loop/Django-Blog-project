@@ -1,5 +1,11 @@
 {% extends "posts/base.html" %}
 
+{% block head_extra %}
+{{ form.media }}
+
+{% endblock head_extra %}
+
+
 {% block content %}
 <div class='col-sm-6 col-sm-offset-3'>
 
@@ -8,7 +14,7 @@
 <form method="POST" action="" enctype='multipart/form-data'>
 {% csrf_token %} 
 {{ form.as_p }}
-<input type="submit"  value="Update Post">
+<input type="submit" class="btn btn-primary" value="Update Post">
 </form>
 </div>
 

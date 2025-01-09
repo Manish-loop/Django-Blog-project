@@ -8,7 +8,10 @@
     <title>{% block head_title %} Blog Post {% endblock head_title %} </title>                 
     
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel='stylesheet' href='{% static "css/base.css" %}'>
+    
+    {% block head_extra %}   {% endblock head_extra %}
 </head>
 <body>
     <div id="fb-root"></div>
@@ -32,6 +35,12 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+   
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
 
