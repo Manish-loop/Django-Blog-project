@@ -18,6 +18,15 @@ class PostForm(forms.ModelForm):
             "publish",
         ]
         
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if instance.image:  # Check if an image exists
+            # Set the height and width fields manually
+            instance.height_field = instance.image.height
+            instance.width_field = instance.image.width
+        if commit:
+            instance.save()
+        return instance
         
         
         

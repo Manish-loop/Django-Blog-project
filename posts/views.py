@@ -21,7 +21,7 @@ def post_create(request):
             instance.user = request.user
             instance.save()
             messages.success(request, "Successfully Created")
-            return redirect('posts:detail', id=instance.id)
+            return redirect('posts:detail', slug=instance.slug)
         else:
             messages.error(request, "Not Successfully created")
     context = {
