@@ -41,15 +41,13 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(".content-markdown").each(function(){
-            var content = $(this).text();
-            console.log(content);
+            var content = $(this).text().trim();
             var markedContent = marked.parse(content); 
             markedContent = markedContent.replace(/<pre.*?>.*?<\/pre>/gs, '')
-            console.log(markedContent);
             $(this).html(markedContent);
         });
 
-        $(".content-markdown img").addClass("img-fluid");
+        $(".post-detail-item img").addClass("img-fluid");
         
     });
 

@@ -1,6 +1,3 @@
-
-
-
 {% extends "posts/base.html" %}
 {% block content %}
 
@@ -16,14 +13,13 @@
             </form>
         </div> <br/>
 
-
     {% for obj in object_list %}
     <div class="col-sm-12  mb-4">
         <div class="card">
             {% if obj.image %}
                 <img src='{{ obj.image.url }}' class='img-fluid'>
             {% endif %}
-            <div class="card-body">
+            <div class="card-body  post-detail-item" >
                 
                 {% if obj.draft %}<h3>Admin only: Draft</h3>{% endif %}
                 {% if obj.publish > today %}<h3>Admin only: Future Post</h3>{% endif %} 
@@ -31,7 +27,7 @@
                     <a href="{% url 'posts:detail' slug=obj.slug %}">{{ obj.title }}</a> <small>{{ obj.publish }} </small>
                 </h3>
                 {% if obj.user.get_full_name %} <p>Author: {{ obj.user.get_full_name }}</p> {% endif %}
-                <p class='content-markdown'>{{ obj.content|truncatechars:120 }}</p>
+                {{ obj.get_markdown|truncatechars:120 }}
                 <a href="{% url 'posts:detail' slug=obj.slug %}" class="btn btn-info" role="button">View</a>   
             </div>
         </div>

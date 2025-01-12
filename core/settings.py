@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third party library
+    'markdown',
     'pagedown',
     # local
     'posts',
