@@ -1,25 +1,42 @@
 {% extends "posts/base.html" %}
 
-{% block head_extra %}
-{{ form.media }}
+{% load widget_tweaks %}
 
+{% block head_extra %}
+    {{ form.media }}
 {% endblock head_extra %}
 
-
 {% block content %}
-<div class='col-sm-6 col-sm-offset-3'>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-sm-6">
+                <h1>Preview</h1>
+                <div class="content-preview">
+                    <h3 id="preview-title"></h3>
+                    <div id="preview-content"></div>
+                </div>
+            </div>
 
-<h1>Form</h1>
+            <div class="col-sm-6">
+                <h1>Form</h1>
+                <form method="POST" action="" enctype='multipart/form-data'>
+                    {% csrf_token %} 
+                
+                    {{ form.as_p }}
 
-<form method="POST" action="" enctype='multipart/form-data'>
-{% csrf_token %} 
-{{ form.as_p }}
-<input type="submit" class="btn btn-primary" value="Update Post">
-</form>
-</div>
 
+
+                    <div class="wmd-wrapper">
+                        <div class="wmd-panel">
+                            <div id="wmd-button-bar-id_content" class="wmd-button-bar"></div>
+                        </div>
+                        <div id="wmd-preview-id_content" class="wmd-preview"></div>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Update Post">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
-
-
-
-

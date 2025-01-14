@@ -5,7 +5,7 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(widget=PagedownWidget)
+    content = forms.CharField(widget=PagedownWidget())
     publish = forms.DateField(widget=forms.SelectDateWidget)
     
     class Meta:
@@ -27,6 +27,8 @@ class PostForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+
         
         
         

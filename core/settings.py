@@ -39,11 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third party library
+    'widget_tweaks',
     'markdown',
     'pagedown',
+    
     # local
+    'comments',
     'posts',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

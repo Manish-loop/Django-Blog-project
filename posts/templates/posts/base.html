@@ -8,14 +8,21 @@
     <title>{% block head_title %} Blog Post {% endblock head_title %} </title>                 
     
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel='stylesheet' href='{% static "css/base.css" %}'>
     
     {% block head_extra %}   {% endblock head_extra %}
 </head>
+
+<style>
+    .wmd-panel {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+</style>
+
 <body>
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous"  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0"></script>
 
     {% if messages %}
     <div class="messages">
@@ -25,33 +32,68 @@
             {% endfor %}
         </ul>
     </div>
-{% endif %}
+    {% endif %}
 
+    <div class="container"> 
+    {% block content %}{% endblock content %}
+    </div>
 
-<div class="container"> 
-{% block content %}{% endblock content %}
-</div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".content-markdown").each(function(){
+                var content = $(this).text().trim();
+                var markedContent = marked.parse(content); 
+                markedContent = markedContent.replace(/<pre.*?>.*?<\/pre>/gs, '')
+                $(this).html(markedContent);
+            });
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $(".content-markdown").each(function(){
-            var content = $(this).text().trim();
-            var markedContent = marked.parse(content); 
-            markedContent = markedContent.replace(/<pre.*?>.*?<\/pre>/gs, '')
-            $(this).html(markedContent);
+            $(".post-detail-item img").addClass("img-fluid");
+            
+            $('#wmd-preview-id_content').hide();
+
+        
+
+            var titleInput = $("#id_title")
+
+            function setTitle(value) {
+                $("#preview-title").text(value)
+            }
+            setTitle(titleInput.val())
+
+            titleInput.keyup(function(){
+                var newContent = $(this).val()
+                setTitle(newContent)
+            })
+            
+
+            var contentInput = $("#id_content")
+            
+            function setContent(value){
+                var markedContent = marked.parse(value)
+                $("#preview-content").html(markedContent)
+                $("#preview-content img").each(function(){
+                    $(this).addClass("img-fluid")
+                })
+            }
+            setContent(contentInput.val())
+            
+            contentInput.keyup(function(){
+                var newContent = $(this).val();
+                setContent(newContent);
+            })
+
+            
+
         });
 
-        $(".post-detail-item img").addClass("img-fluid");
-        
-    });
-
-</script>
+       
+    </script>
 
 
 

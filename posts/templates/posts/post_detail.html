@@ -26,33 +26,46 @@
                 <h3 class="text-warning">Admin only: Future Post</h3>
             {% endif %}
 
-            <!-- Post Title -->
+            
             <h1>{{ instance.title }}
                 <small class="text-muted">{{ instance.publish }}</small>
             </h1>
 
-            <!-- Author -->
+
             {% if instance.user.get_full_name %}
                 <p><strong>Author:</strong> {{ instance.user.get_full_name }}</p>
             {% endif %}
 
-            <!-- Facebook Like Button -->
+            
             <div class="mb-2">
                 <div class="fb-like" data-href="{{ request.build_absolute_uri }}"
                     data-layout="button_count" data-action="like"
                     data-show-faces="false" data-share="true"></div>
             </div>
 
-            <!-- Post Content -->
             <div class=" post-detail-item">
                 {{ instance.get_markdown }}
             </div>
 
             <hr/>
 
+            <div>
+                <p class='lead'>Comments</p>
+                {% for comment in comments %}
+                    <div class=''>
+                       {{ comment.content }}
+                       <br/>
+                       <small> {{ comment.user }} | {{ comment.timestamp|timesince }} </small>
+                       <hr/>
+                    </div>
+                    {{ comment.content_object }}
+                {% endfor %}
+            </div>
+
+
             <!-- Facebook Comments -->
-            <div class="fb-comments mt-4" data-href="{{ request.build_absolute_uri }}"
-                 data-width="100%" data-numposts="5"></div>
+            {% comment %} <div class="fb-comments mt-4" data-href="{{ request.build_absolute_uri }}"
+                data-width="100%" data-numposts="5"></div> {% endcomment %}
         </div>
     </div>
 </div>

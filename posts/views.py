@@ -5,6 +5,9 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+
+from comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
 from .models import Post
 from .forms import PostForm
 
@@ -35,10 +38,16 @@ def post_detail(request, slug):
         if not request.user.is_authenticated:
             raise Http404
     share_string = quote_plus(instance.content)
+    content_type = ContentType.objects.get_for_model(Post) #gives instance of object we are working with
+    obj_id = instance.id
+    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
+    
+    
     context = {
         "title": instance.title,
         "instance": instance,
-        "share_string": share_string
+        "share_string": share_string,
+        "comments": comments,
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -93,4 +102,5 @@ def post_delete(request, slug):
     instance.delete()
     messages.success(request, "Successfully deleted")   
     return redirect('posts:list')
+
 
