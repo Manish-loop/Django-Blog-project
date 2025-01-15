@@ -8,7 +8,8 @@
 
 
 {% block content %}
-<div class="col-sm-6 mb-2 offset-sm-3">
+<div class="col-12 col-sm-10 col-md-8 col-lg-6 mb-1 offset-sm-1 offset-md-2 offset-lg-3">
+
     <div class="card">
 
         <!-- Post Image -->
@@ -43,6 +44,8 @@
                     data-show-faces="false" data-share="true"></div>
             </div>
 
+
+
             <div class=" post-detail-item">
                 {{ instance.get_markdown }}
             </div>
@@ -51,17 +54,21 @@
 
             <div>
                 <p class='lead'>Comments</p>
+                <form method="POST" action=""> {% csrf_token %}
+                    {{ comment_form }}
+                    <input type='submit' value='Post comment' class='btn btn-primary'>
+                </form>
+                <hr/>
                 {% for comment in comments %}
-                    <div class=''>
-                       {{ comment.content }}
-                       <br/>
-                       <small> {{ comment.user }} | {{ comment.timestamp|timesince }} </small>
-                       <hr/>
-                    </div>
-                    {{ comment.content_object }}
+
+                <blockquote>
+                    <p>{{ comment.content }}</p>
+                    <footer>{{ comment.user }} | {{ comment.timestamp|timesince }} ago</footer>
+                </blockquote>
+
+                <hr/>  
                 {% endfor %}
             </div>
-
 
             <!-- Facebook Comments -->
             {% comment %} <div class="fb-comments mt-4" data-href="{{ request.build_absolute_uri }}"

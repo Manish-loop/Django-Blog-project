@@ -7,9 +7,10 @@ from django.db.models.signals import pre_save
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 
+from django.contrib.contenttypes.models import ContentType
 
 from markdown import markdown
-
+from comments.models import Comment
 
 # Create your models here.
 # way to control how model works= PostManager
@@ -52,12 +53,23 @@ class Post(models.Model):
         markdown_text = markdown(content)
         return mark_safe(markdown_text)
     
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(self)
+        return qs.count()
+    
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
+    
     class Meta:
         ordering = ["-timestamp", "-updated"]
         
     
-    
-    
+
 
 def create_slug(instance, new_slug=None):
     if new_slug is not None:
