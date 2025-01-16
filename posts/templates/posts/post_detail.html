@@ -1,24 +1,18 @@
-{%  extends "posts/base.html" %}   
-
+{% extends "posts/base.html" %}
 
 {% block head_title %} 
 {{ instance.title }} | {{ block.super }} 
-{% endblock head_title %} 
-
-
+{% endblock head_title %}
 
 {% block content %}
 <div class="col-12 col-sm-10 col-md-8 col-lg-6 mb-1 offset-sm-1 offset-md-2 offset-lg-3">
-
     <div class="card">
-
         <!-- Post Image -->
         {% if instance.image %}
             <img src='{{ instance.image.url }}' class='img-fluid card-img-top'>
         {% endif %}
 
         <div class="card-body">
-            
             <!-- Draft or Future Post Labels -->
             {% if instance.draft %}
                 <h3 class="text-danger">Admin only: Draft</h3>
@@ -27,26 +21,21 @@
                 <h3 class="text-warning">Admin only: Future Post</h3>
             {% endif %}
 
-            
             <h1>{{ instance.title }}
                 <small class="text-muted">{{ instance.publish }}</small>
             </h1>
-
 
             {% if instance.user.get_full_name %}
                 <p><strong>Author:</strong> {{ instance.user.get_full_name }}</p>
             {% endif %}
 
-            
             <div class="mb-2">
                 <div class="fb-like" data-href="{{ request.build_absolute_uri }}"
                     data-layout="button_count" data-action="like"
                     data-show-faces="false" data-share="true"></div>
             </div>
 
-
-
-            <div class=" post-detail-item">
+            <div class="post-detail-item">
                 {{ instance.get_markdown }}
             </div>
 
@@ -54,28 +43,46 @@
 
             <div>
                 <p class='lead'>Comments</p>
-                <form method="POST" action=""> {% csrf_token %}
+
+                <form method="POST" action="."> {% csrf_token %}
                     {{ comment_form }}
                     <input type='submit' value='Post comment' class='btn btn-primary'>
                 </form>
                 <hr/>
+
                 {% for comment in comments %}
+                    <blockquote>
+                        <p>{{ comment.content }}</p>
+                        <footer>{{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comments {% if comment.children.count > 1 %} {% endif %} | {% endif %} <a class='comment-reply-btn' href='#'>Reply</a></footer>
+                        <div class='comment-reply' style='display:none;'> 
 
-                <blockquote>
-                    <p>{{ comment.content }}</p>
-                    <footer>{{ comment.user }} | {{ comment.timestamp|timesince }} ago</footer>
-                </blockquote>
+                        <form method="POST" action="."> {% csrf_token %}
+                            {{ comment_form }}
+                            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                            <input type="submit" value="Reply" class="btn btn-primary">
+                        </form>
 
-                <hr/>  
+    
+                        {% for child_comment in comment.children %}
+                            <blockquote class="ml-4"> 
+                                <p>{{ child_comment.content }}</p>
+                                <footer>{{ child_comment.user }} | {{ child_comment.timestamp|timesince }} ago</footer>
+
+                                {% comment %} <form method="POST" action="."> {% csrf_token %}
+                                    {{ comment_form }}
+                                    <input type="hidden" name="parent_id" value="{{ child_comment.id }}">
+                                    <input type="submit" value="Reply" class="btn btn-primary">
+                                </form> {% endcomment %}
+                                {% endfor %}
+                            </blockquote>   
+                            
+                        </div>
+
+                    </blockquote>
+                    <hr/>
                 {% endfor %}
             </div>
-
-            <!-- Facebook Comments -->
-            {% comment %} <div class="fb-comments mt-4" data-href="{{ request.build_absolute_uri }}"
-                data-width="100%" data-numposts="5"></div> {% endcomment %}
         </div>
     </div>
 </div>
 {% endblock content %}
-
-
