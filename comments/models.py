@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 
 # Create your models here.
 
@@ -18,7 +19,6 @@ class CommentManager(models.Manager):
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey("content_type", "object_id")
@@ -34,6 +34,9 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+    def get_absolute_url(self):
+        return reverse("comments:thread", kwargs={"id": self.id})
     
     def children(self):
         return Comment.objects.filter(parent=self)

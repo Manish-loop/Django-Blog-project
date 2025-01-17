@@ -1,0 +1,47 @@
+{% extends "posts/base.html" %}
+
+{% block head_title %} 
+{{ instance.title }} | {{ block.super }} 
+{% endblock head_title %}
+
+{% block content %}
+{{ object }}
+<div class="col-12 col-sm-10 col-md-8 col-lg-6 mb-1 offset-sm-1 offset-md-2 offset-lg-3">
+    
+        
+                    <blockquote>
+                        <p>{{ comment.content }}</p>
+                        <footer>{{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comments {% if comment.children.count > 1 %} {% endif %} | {% endif %} </footer>
+                        <div> 
+
+                        <hr/>
+
+    
+                        {% for child_comment in comment.children %}
+                            <blockquote class="ml-4"> 
+                                <p>{{ child_comment.content }}</p>
+                                <footer>{{ child_comment.user }} | {{ child_comment.timestamp|timesince }} ago</footer>
+                               <br>
+                                {% comment %} <form method="POST" action="."> {% csrf_token %}
+                                    {{ comment_form }}
+                                    <input type="hidden" name="parent_id" value="{{ child_comment.id }}">
+                                    <input type="submit" value="Reply" class="btn btn-primary">
+                                </form> {% endcomment %}
+                        {% endfor %}
+                       
+                            </blockquote>   
+                            <form method="POST" action="."> {% csrf_token %}
+                               {{ form }}
+                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                <input type="submit" value="Reply" class="btn btn-primary">
+                            </form>
+                        </div>
+
+                    </blockquote>
+                    <hr/>
+               
+            
+      
+    </div>
+</div>
+{% endblock content %}

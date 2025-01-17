@@ -14,10 +14,9 @@ The comments method is decorated with @property, which means it can be accessed 
 
 # benefits of prooperty are : 
 1. Encapsulation
-2. Read-only atrributes
+2. Read-only atrributes   
 3. Code-simplification
 It prevents external code modifiying them directly
-
 
 In Django, cleaned_data is a dictionary that contains the valid, processed data from a form after it has been validated.
 When you submit a form in Django, the form goes through a validation process where it checks the submitted data against 
