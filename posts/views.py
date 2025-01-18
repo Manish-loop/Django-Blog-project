@@ -11,10 +11,8 @@ from comments.forms import CommentForm
 
 from comments.models import Comment
 
-
 from .forms import PostForm
 from .models import Post
-from .utils import get_read_time
 
 # Create your views here.
 def post_create(request):
@@ -44,7 +42,6 @@ def post_detail(request, slug):
             raise Http404
     share_string = quote_plus(instance.content)
     
-    print(get_read_time(instance.get_markdown()))
     
     initial_data = {
         "content_type": instance.get_content_type,

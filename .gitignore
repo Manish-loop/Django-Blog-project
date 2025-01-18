@@ -21,3 +21,6 @@ It prevents external code modifiying them directly
 In Django, cleaned_data is a dictionary that contains the valid, processed data from a form after it has been validated.
 When you submit a form in Django, the form goes through a validation process where it checks the submitted data against 
 the form's fields and their associated validation rules (e.g., required fields, max length, proper format).
+
+
+In utils.py, math.ceil is going to round up and math.floor is going to round down

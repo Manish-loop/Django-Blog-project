@@ -14,17 +14,19 @@
 
         <div class="card-body">
             <!-- Draft or Future Post Labels -->
-            {% if instance.draft %}
+            {% comment %} {% if instance.draft %}
                 <h3 class="text-danger">Admin only: Draft</h3>
             {% endif %}
             {% if instance.publish > today %}
                 <h3 class="text-warning">Admin only: Future Post</h3>
-            {% endif %}
+            {% endif %} {% endcomment %}
 
             <h1>{{ instance.title }}
                 <small class="text-muted">{{ instance.publish }}</small>
             </h1>
-
+            
+            <p>Read time: {% if instance.read_time <= 1 %} < 1 minute {% else %} {{ instance.read_time }} minutes {% endif %} </p>
+                
             {% if instance.user.get_full_name %}
                 <p><strong>Author:</strong> {{ instance.user.get_full_name }}</p>
             {% endif %}
