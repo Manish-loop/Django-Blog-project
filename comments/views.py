@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from .forms import CommentForm
 from .models import Comment
@@ -9,17 +11,14 @@ from posts.models import Post
 
 # Create your views here.
 
+@login_required
 def comment_delete(request, id):
-    # obj = get_object_or_404(Comment, id=id)
-    # obj = Comment.objects.get(id=id)
     try: 
         obj = Comment.objects.get(id=id)
     except:
         raise Http404
     
     if obj.user != request.user:
-        # messages.success(request, "You do not have permission to view this.")
-        # raise Http404
         response = HttpResponse('You do not have permission to view this.')
         response.status_code = 403
         return response
@@ -35,7 +34,6 @@ def comment_delete(request, id):
     return render(request, "comments/comment_delete.html", context)
 
 def comment_thread(request, id):
-    # obj = get_object_or_404(Comment, id=id)
     try: 
         obj = Comment.objects.get(id=id)
     except:
@@ -52,7 +50,7 @@ def comment_thread(request, id):
         "object_id": obj.object_id,
     }
     form = CommentForm(request.POST or None, initial=initial_data)
-    if form.is_valid():
+    if form.is_valid() and request.user.is_authenticated():
         c_type = form.cleaned_data.get("content_type")
         content_type = ContentType.objects.get_for_model(Post)
         obj_id = form.cleaned_data.get("object_id")

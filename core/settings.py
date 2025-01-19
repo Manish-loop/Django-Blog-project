@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pagedown',
     
     # local
+    'accounts',
     'comments',
     'posts',
 ]
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL = "/login/"
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [

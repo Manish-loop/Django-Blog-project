@@ -24,3 +24,10 @@ the form's fields and their associated validation rules (e.g., required fields, 
 
 
 In utils.py, math.ceil is going to round up and math.floor is going to round down
+
+
+# For form validation clean method is used just like in 
+#  def clean(self, *args, **kwargs):
+#        username = self.cleaned_data.get("username")
+
+# It prevents certain things from happening even if they do

@@ -45,11 +45,14 @@
 
             <div>
                 <p class='lead'>Comments</p>
-
+                {% if request.user.is_authenticated %}
                 <form method="POST" action="."> {% csrf_token %}
                     {{ comment_form }}
                     <input type='submit' value='Post comment' class='btn btn-primary'>
                 </form>
+                {% else %}
+                <p>You must login to comment</p>
+                {% endif %}
                 <hr/>
 
                 {% for comment in comments %}
@@ -73,12 +76,17 @@
                                 </form> {% endcomment %}
                         {% endfor %}
                        
-                            </blockquote>   
+                    </blockquote>  
+                            
+                            {% if request.user.is_authenticated %} 
                             <form method="POST" action="."> {% csrf_token %}
                                {{ comment_form }}
                                 <input type="hidden" name="parent_id" value="{{ comment.id }}">
                                 <input type="submit" value="Reply" class="btn btn-primary">
                             </form>
+                            {% else %}
+                            <p>You must login to comment</p>
+                            {% endif %}
                         </div>
 
                     </blockquote>
