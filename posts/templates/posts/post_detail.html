@@ -4,6 +4,10 @@
 {{ instance.title }} | {{ block.super }} 
 {% endblock head_title %}
 
+{% block post_detail_link %}
+<li class="breadcrumb-item"> <a href='{{ instance.get_absolute_url }}'> {{ instance.title }} </a> </li>
+{% endblock %}
+
 {% block content %}
 <div class="col-12 col-sm-10 col-md-8 col-lg-6 mb-1 offset-sm-1 offset-md-2 offset-lg-3">
     <div class="card">
@@ -13,13 +17,13 @@
         {% endif %}
 
         <div class="card-body">
-            <!-- Draft or Future Post Labels -->
-            {% comment %} {% if instance.draft %}
+           
+            {% if instance.draft %}
                 <h3 class="text-danger">Admin only: Draft</h3>
             {% endif %}
             {% if instance.publish > today %}
                 <h3 class="text-warning">Admin only: Future Post</h3>
-            {% endif %} {% endcomment %}
+            {% endif %} 
 
             <h1>{{ instance.title }}
                 <small class="text-muted">{{ instance.publish }}</small>

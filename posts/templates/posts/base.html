@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block head_title %} Blog Post {% endblock head_title %} </title>                 
-    
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel='stylesheet' href='{% static "css/base.css" %}'>
     
     {% block head_extra %}   {% endblock head_extra %}
@@ -28,13 +28,30 @@
     <div class="messages">
         <ul class="messages">
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
     </div>
     {% endif %}
 
-    <div class="container"> 
+    <div class='container'>
+        <ul class="breadcrumb d-flex">
+            
+            <li class="breadcrumb-item"><a href="{% url "posts:list" %}">Home</a></li>
+             {% block post_detail_link %}
+             {% endblock %}
+             
+            <div class="ml-auto d-flex">
+                {% if not request.user.is_authenticated %}
+                <li class="breadcrumb-item"><a href="{% url "register" %}">Register</a></li>
+                <li class="breadcrumb-item"><a href="{% url "login" %}">Login</a></li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="{% url "logout" %}">Logout</a></li>
+                
+            </div>
+            {% endif %}
+        </ul>
+    
     {% block content %}{% endblock content %}
     </div>
 
