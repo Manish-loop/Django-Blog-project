@@ -43,10 +43,10 @@
              
             <div class="ml-auto d-flex">
                 {% if not request.user.is_authenticated %}
-                <li class="breadcrumb-item"><a href="{% url "register" %}">Register</a></li>
-                <li class="breadcrumb-item"><a href="{% url "login" %}">Login</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'register' %}">Register</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'login' %}">Login</a></li>
                 {% else %}
-                <li class="breadcrumb-item"><a href="{% url "logout" %}">Logout</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'logout' %}">Logout</a></li>
                 
             </div>
             {% endif %}
@@ -91,12 +91,12 @@
 
             var contentInput = $("#id_content")
             
-            function setContent(value){
-                var markedContent = marked.parse(value)
-                $("#preview-content").html(markedContent)
-                $("#preview-content img").each(function(){
-                    $(this).addClass("img-fluid")
-                })
+            function updatePreviewContent(content) {
+                var parsedContent = marked.parse(content);
+                $("#preview-content").html(parsedContent);
+                $("#preview-content img").each(function() {
+                    $(this).addClass("img-fluid");
+                });
             }
             setContent(contentInput.val())
             
