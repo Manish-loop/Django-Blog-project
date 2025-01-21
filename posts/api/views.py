@@ -1,9 +1,32 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import CreateAPIView,ListAPIView, RetrieveAPIView, DestroyAPIView, UpdateAPIView
 
 from posts.models import Post
+from posts.api.serializers import PostCreateSerializer ,PostListSerializer, PostDetailSerializer
 
-class PostListView(ListAPIView):
+
+class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
+    serializer_class = PostCreateSerializer
 
 
-    # def get_queryset()  # customize how that works by overriding the get_queryset method
+class PostListAPIView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostListSerializer
+
+    
+class PostDetailAPIView(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
+    lookup_field = 'slug'
+
+
+class PostUpdateAPIView(UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
+    lookup_field = 'slug'
+
+
+class PostDeleteAPIView(DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
+    lookup_field = 'slug'

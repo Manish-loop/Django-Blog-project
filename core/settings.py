@@ -42,11 +42,14 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'markdown',
     'pagedown',
+    'rest_framework',
     
     # local
     'accounts',
     'comments',
     'posts',
+
+    
 ]
 
 

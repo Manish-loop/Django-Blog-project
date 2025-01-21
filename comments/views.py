@@ -50,7 +50,7 @@ def comment_thread(request, id):
         "object_id": obj.object_id,
     }
     form = CommentForm(request.POST or None, initial=initial_data)
-    if form.is_valid() and request.user.is_authenticated():
+    if form.is_valid() and request.user.is_authenticated:
         c_type = form.cleaned_data.get("content_type")
         content_type = ContentType.objects.get_for_model(Post)
         obj_id = form.cleaned_data.get("object_id")
