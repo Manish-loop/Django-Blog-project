@@ -2,8 +2,7 @@ from rest_framework import serializers
 
 from posts.models import Post
 
-
-class PostCreateSerializer(serializers.ModelSerializer):
+class PostCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
@@ -28,6 +27,7 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
+            'user',
             'title',
             'slug',
             'content',
