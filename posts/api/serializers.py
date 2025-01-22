@@ -1,8 +1,8 @@
-from rest_framework import serializers 
+from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
 
 from posts.models import Post
 
-class PostCreateUpdateSerializer(serializers.ModelSerializer):
+class PostCreateUpdateSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = [
@@ -11,11 +11,17 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
             'publish',
         ]
 
+post_detail_url = HyperlinkedIdentityField(
+        view_name='posts-api:detail',
+        lookup_field='slug'
+    )
 
-class PostDetailSerializer(serializers.ModelSerializer):
+class PostDetailSerializer(ModelSerializer):
+    url = post_detail_url
     class Meta:
         model = Post
         fields = [
+            'url',
             'id',
             'title',
             'slug',
@@ -23,10 +29,13 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'publish',
         ]
 
-class PostListSerializer(serializers.ModelSerializer):
+class PostListSerializer(ModelSerializer):
+    url = post_detail_url
+   
     class Meta:
         model = Post
         fields = [
+            'url',
             'user',
             'title',
             'slug',
