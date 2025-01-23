@@ -28,8 +28,9 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('', include(('posts.urls'), namespace='posts')),
-
+    
     path('api/posts/', include(('posts.api.urls'), namespace='posts-api')),
+    path('api/comments/', include(('comments.api.urls'), namespace='comments-api')),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

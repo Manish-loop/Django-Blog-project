@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 import os
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 
@@ -83,12 +83,13 @@ def create_slug(instance, new_slug=None):
         return create_slug(instance, new_slug=new_slug)
     return slug
 
-    def save_slug(sender, instance, **kwargs):
+def save_slug(sender, instance, **kwargs):
         if not instance.slug:
             instance.slug = create_slug(instance)
             instance.save()
 
-    post_save.connect(save_slug, sender=Post)
+post_save.connect(save_slug, sender=Post)
+
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
