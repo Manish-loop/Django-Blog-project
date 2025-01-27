@@ -29,6 +29,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('', include(('posts.urls'), namespace='posts')),
     
+    path('api/users/', include(('accounts.api.urls'), namespace='users-api')),
     path('api/posts/', include(('posts.api.urls'), namespace='posts-api')),
     path('api/comments/', include(('comments.api.urls'), namespace='comments-api')),
     
