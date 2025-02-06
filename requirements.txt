@@ -43,4 +43,4 @@ sqlparse==0.5.1
 tk==0.1.0
 tzdata==2024.1
 urllib3==2.2.2
-virtualenv==20.26.4
+virtualenv==20.26.6
